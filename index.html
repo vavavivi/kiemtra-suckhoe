@@ -1,94 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Health Check</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    .container {
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    label {
-      display: block;
-      margin: 10px 0 5px;
-    }
-    input {
-      width: 100%;
-      padding: 8px;
-      box-sizing: border-box;
-    }
-    button {
-      margin-top: 20px;
-      padding: 10px 15px;
-      border: none;
-      background-color: #007bff;
-      color: #fff;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .result {
-      margin-top: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Advisor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+        }
+        input[type="number"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 150px;
+        }
+        .link {
+            display: block;
+            margin-top: 10px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Health Check Test</h1>
-    <form id="healthForm">
-      <label for="age">Tuổi:</label>
-      <input type="number" id="age" name="age" required>
-      
-      <label for="height">Chiều cao (cm):</label>
-      <input type="number" id="height" name="height" required>
-      
-      <label for="weight">Cân nặng (kg):</label>
-      <input type="number" id="weight" name="weight" required>
-      
-      <button type="submit">Kiểm tra sức khỏe</button>
-    </form>
-    
-    <div class="result" id="result"></div>
-  </div>
 
-  <script>
-    document.getElementById('healthForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      
-      const age = document.getElementById('age').value;
-      const height = document.getElementById('height').value / 100;
-      const weight = document.getElementById('weight').value;
-      
-      const bmi = weight / (height * height);
-      let advice = '';
-      
-      if (bmi < 18.5) {
-        advice = "Bạn đang thiếu cân. Hãy ăn nhiều thực phẩm giàu năng lượng và protein, tập luyện nhẹ nhàng.";
-      } else if (bmi >= 18.5 && bmi < 24.9) {
-        advice = "Chỉ số BMI của bạn bình thường. Hãy duy trì chế độ ăn uống và tập luyện hiện tại.";
-      } else if (bmi >= 25 && bmi < 29.9) {
-        advice = "Bạn đang thừa cân. Hãy giảm khẩu phần ăn có nhiều chất béo và đường, tăng cường tập luyện.";
-      } else {
-        advice = "Bạn đang béo phì. Hãy thực hiện chế độ ăn uống lành mạnh và tập luyện đều đặn.";
-      }
-      
-      const resultDiv = document.getElementById('result');
-      resultDiv.innerHTML = `
-        <h2>Kết quả:</h2>
-        <p>BMI: ${bmi.toFixed(2)}</p>
-        <p>Lời khuyên: ${advice}</p>
-      `;
-    });
-  </script>
+<div class="container">
+    <img src="https://ankhanh.edisonschools.edu.vn/wp-content/themes/main/assets/images/common/edison-logo.svg" alt="Edison School Logo" class="logo">
+    <h1>Health Advisor</h1>
+    <label for="age">Tuổi:</label>
+    <input type="number" id="age" placeholder="Nhập tuổi">
+    
+    <label for="height">Chiều cao (cm):</label>
+    <input type="number" id="height" placeholder="Nhập chiều cao (cm)">
+    
+    <label for="weight">Cân nặng (kg):</label>
+    <input type="number" id="weight" placeholder="Nhập cân nặng (kg)">
+    
+    <button onclick="calculateHealth()">Xem tư vấn sức khỏe</button>
+    
+    <div id="result" class="result"></div>
+</div>
+
+<script>
+    function calculateHealth() {
+        const age = document.getElementById('age').value;
+        const height = document.getElementById('height').value;
+        const weight = document.getElementById('weight').value;
+        const result = document.getElementById('result');
+        
+        if (age === "" || height === "" || weight === "") {
+            result.textContent = "Vui lòng nhập đầy đủ thông tin!";
+            return;
+        }
+        
+        const bmi = (weight / ((height / 100) ** 2)).toFixed(2);
+
+        let advice = "";
+        let link = "";
+
+        if (bmi < 18.5) {
+            advice = "Bạn đang ở tình trạng thiếu cân. Hãy ăn uống đầy đủ và tập luyện thường xuyên.";
+            link = "<a href='https://example.com/thieu-can' class='link'>Tư vấn tập luyện cho người thiếu cân</a>";
+        } else if (bmi >= 18.5 && bmi < 24.9) {
+            advice = "Bạn có sức khỏe tốt. Hãy duy trì chế độ ăn uống và luyện tập hiện tại.";
+            link = "<a href='https://example.com/suc-khoe-tot' class='link'>Tư vấn tập luyện cho người có sức khỏe tốt</a>";
+        } else if (bmi >= 25 && bmi < 29.9) {
+            advice = "Bạn đang ở tình trạng thừa cân. Hãy tăng cường tập luyện và kiểm soát chế độ ăn uống.";
+            link = "<a href='thua-can.html' class='link'>Tư vấn tập luyện cho người thừa cân</a>";
+        } else {
+            advice = "Bạn đang ở tình trạng béo phì. Cần có chế độ ăn uống và luyện tập khoa học để giảm cân.";
+            link = "<a href='https://example.com/beo-phi' class='link'>Tư vấn tập luyện cho người béo phì</a>";
+        }
+
+        result.innerHTML = `<p>Chỉ số BMI của bạn là: <strong>${bmi}</strong></p><p>${advice}</p>${link}`;
+    }
+</script>
+
 </body>
 </html>
